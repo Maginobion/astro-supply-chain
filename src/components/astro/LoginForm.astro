@@ -1,0 +1,74 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<form class="login-form space-content" method="post">
+  <div class="notification p-2 mx-auto mb-4 flex gap-2 items-center w-fit border border-red-600 rounded">
+    <Icon name="majesticons:emoji-sad-line" class={"text-red-600"} />
+    <p class="w-fit text-red-600">
+      Correo y/o contraseña incorrectos
+    </p>
+  </div>
+  <div class="mb-4">
+    <label for="email">Email</label>
+    <input type="email" name="email" autocomplete="email" required>
+  </div>
+  <div class="login-form__controls">
+    <label for="password">Password</label>
+    <input type="password" name="password" autocomplete="current-password" required>
+  </div>
+  <button class="py-2 mt-6 mb-4 rounded w-full bg-amber-300" type="submit">Login</button>
+  <label class="checkbox">
+    <input type="checkbox" name="remember">
+    <span>Remember me</span>
+  </label>
+</form> 
+
+<script>
+  // variables
+  const form = document.querySelector('.login-form')!
+  const notification = form.querySelector<HTMLDivElement>('.notification')!
+  const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]')!
+  const passwordInput = form.querySelector<HTMLInputElement>('input[name="password"]')!
+  const submitButton = form.querySelector('button')!
+
+  // execution
+  notification.style.display = 'none'
+
+  submitButton.addEventListener('click', event => {
+    event.preventDefault()
+
+    if (emailInput.value === 'admin@mail.demo' && passwordInput.value === 'admin123') {
+      localStorage.setItem('isLoggedIn', 'true')
+      window.location.href = '/'
+    } else {
+      notification.style.display = 'flex'
+    }
+  })
+</script>
+
+<style is:global>
+  .login-form {
+    label {
+      display: block;
+      margin-bottom: .5rem;
+    }
+
+    input {
+      width: 100%;
+      border-radius: .25rem;
+      padding: .5rem;
+      border: 1px solid gray;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+
+      input {
+        width: auto;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+import LoginLayout from '../layouts/LoginLayout.astro'
+import LoginForm from '../components/astro/LoginForm.astro'
+import { Icon } from 'astro-icon/components'
+---
+
+<LoginLayout title="X Supplies - Login">
+  <section class="bg-neutral-100">
+    <div class="login grid md:grid-cols-[550px_2fr]">
+      <div class="login__inner flex flex-col justify-between gap-12 p-6 z-10 md:px-12 md:py-24 shadow-[0_0_40px_rgba(0,0,0,0.15)] reveal h-screen">
+        <div class="flex items-center gap-4">
+          <div class="radius-large space-8">
+            <img
+              class="brand__logo radius-large"
+              src="/company-logo.png"
+              alt=""
+            >
+          </div>
+          <div class="brand__text">
+            <span>X Supplies</span>
+            <span>A Logistic Supply Chain Software</span>
+          </div>
+        </div>
+        <div class="inner__form space-content">
+          <h1 class="text-xl mb-8 text-center">Login</h1>
+          <div class="p-2 mx-auto mb-4 flex gap-2 items-center w-fit border border-slate-400 rounded">
+            <Icon name="majesticons:information-circle-line" />
+            <p class="w-fit">Accede usando <strong>admin@mail.demo</strong> y <strong>admin123</strong>.</p>          
+          </div>
+          <div class="space-content">            
+            <LoginForm />
+          </div>
+        </div>
+        <div class="pb-6 md:pb-0 text-neutral-700">
+          <p><em>Dylan Gonzales - 2024</em></p>
+        </div>
+      </div>
+      <div class="login__background hidden md:block h-screen" />
+    </div>
+  </section>
+</LoginLayout>
+
+<style>
+  .login {
+    .brand__logo {
+      max-width: 50px;
+    }
+
+    .brand__text {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+
+      > :first-child {
+        font-weight: bold;
+        @include size-20;
+      }
+
+      > :last-child {
+        @include size-14;
+      }
+    }
+
+    .login__background {
+      background-color: #000;
+      background-image: url("/login-background.webp");
+      background-size: cover;
+      background-position: right;
+      background-repeat: no-repeat;
+    }
+
+    .reveal {
+      animation: reveal 0.3s ease-in;
+    }
+  }
+
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

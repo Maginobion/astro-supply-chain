@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getProducts } from "../lib/repositories/productRepository.ts";
+import { getDestinations } from "../lib/repositories/destinationRepository.ts";
 
 export type Destination = {
     id: string;
@@ -9,18 +10,7 @@ export type Destination = {
 export const GET: APIRoute = async ({ params, request }) => {
     try {
         const products = await getProducts();
-        const destinations: Destination[] = [
-            {
-                id: 'home',
-                name: 'Home'
-            }, {
-                id: 'work',
-                name: 'Work'
-            }, {
-                id: 'gym',
-                name: 'Gym'
-            }
-        ]
+        const destinations = await getDestinations();
         return new Response(JSON.stringify({products, destinations}), {
             status: 200,
             statusText: 'OK'

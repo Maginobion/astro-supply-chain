@@ -1,10 +1,11 @@
 import confetti from 'canvas-confetti';
 import { useEffect, useState, type FormEventHandler } from 'react';
 import type { TProduct } from '../../common/types/product';
+import type { TDestination } from '../../common/types/destination';
 
-const ProductCreator = () => {
+const DestinationCreator = () => {
 
-    const [products, setProducts] = useState<TProduct[]>([]);
+    const [destinations, setDestinations] = useState<TDestination[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false)
@@ -14,7 +15,7 @@ const ProductCreator = () => {
         fetch('/getProductsAndDestinations', { signal: abortController.signal })
         .then(response => response.json())
         .then(data => {
-            setProducts(data.products);
+            setDestinations(data.destinations);
             setIsLoading(false);
         }).catch(error => {
             console.error('Error:', error);
@@ -28,18 +29,26 @@ const ProductCreator = () => {
         setIsSubmitting(true);
         const formData = new FormData(e.target as HTMLFormElement);
         const data = Object.fromEntries(formData.entries());
-        fetch('/createProduct', { method: "POST", body: JSON.stringify(data)})
+        
+        const body = {
+            destinationName: data.destinationName,
+            destinationAddress: data.destinationAddress,
+            destinationStatus: data.destinationStatus === "on",
+            destinationType: data.destinationType
+        }
+
+        fetch('/createDestination', { method: "POST", body: JSON.stringify(body)})
         .then((res) => {
             confetti({
                 origin: { y: 1 }
             });
             res.json().then(res=>
-                setProducts(prev=>[...prev, {
+                setDestinations(prev=>[...prev, {
                     _id: res._id,
                     name: res.name,
-                    description: res.description,
-                    price: res.price,
-                    stock: res.stock
+                    address: res.address,
+                    status: res.status,
+                    type: res.type
                 }])
             )
             setIsSubmitting(false);
@@ -49,16 +58,16 @@ const ProductCreator = () => {
         })
     }
 
-    const handleDelete = (productId: string) => {
+    const handleDelete = (destinationId: string) => {
         if(isDeleting) return;
         setIsDeleting(true);
-        fetch('/deleteProduct', { method: "DELETE", body: JSON.stringify({ productId })})
+        fetch('/deleteProduct', { method: "DELETE", body: JSON.stringify({ destinationId })})
         .then((res) => {
             confetti({
                 origin: { y: 1 }
             });
             res.json().then(res=>
-                setProducts(prev=>prev.filter(elem=>elem._id !== productId))
+                setDestinations(prev=>prev.filter(elem=>elem._id !== destinationId))
             )
             setIsDeleting(false);
         }).catch(error => {
@@ -70,20 +79,25 @@ const ProductCreator = () => {
     return (
         <div>
             <div className='p-4 border shadow rounded'>
-                <h1 className="mb-2">Create product</h1>
+                <h1 className="mb-2">Create destination</h1>
                 <form onSubmit={handleSubmit} className="flex flex-col">
                     <div className='flex gap-4'>
                         <div>
-                            <p>Product name:</p>
-                            <input type='text' name='productName' className="border" />
-                            <p>Description:</p>
-                            <input type='text' name='productDescription' className="border" />
+                            <p>Destination name:</p>
+                            <input type='text' name='destinationName' className="border" />
+                            <p>Address:</p>
+                            <input type='text' name='destinationAddress' className="border" />
                         </div>
                         <div>
-                            <p>Price:</p>
-                            <input type='number' name='productPrice' className="border" />
-                            <p>Initial Stock:</p>
-                            <input type='number' name='productStock' className="border" />
+                            <p>Status:</p>
+                            <input type='checkbox' name='destinationStatus' className="border" />
+                            <p>Type:</p>
+                            <select name="destinationType" id="destinationType" className="border">
+                                <option value="dist-center">Distribution Center</option>
+                                <option value="manufacture">Manufacture</option>
+                                <option value="warehouse">Warehouse</option>
+                                <option value="store">Store</option>
+                            </select>
                         </div>
                     </div>
                     <button 
@@ -101,23 +115,23 @@ const ProductCreator = () => {
                 ) : (
                     <div className='mt-4 flex flex-col border shadow rounded divide-y'>
                         {
-                            products.length === 0 ? (
-                                <p className='p-4'>No products.</p>
+                            destinations.length === 0 ? (
+                                <p className='p-4'>No destinations.</p>
                             ) :
-                            products.map((product) => (
-                                <div className='p-4 flex gap-4 justify-between group hover:bg-[#BFB5AF] relative' key={product._id}>
+                            destinations.map((destination) => (
+                                <div className='p-4 flex gap-4 justify-between hover:bg-[#BFB5AF] relative group' key={destination._id}>
                                     <div className='flex-1'>
-                                        <h2>{product.name}</h2>
-                                        <p>{product.description}</p>
+                                        <h2>{destination.name}</h2>
+                                        <p>{destination.address}</p>
                                     </div>
                                     <div className='flex-1'>
-                                        <p>Price: ${product.price}</p>
-                                        <p>Stock: {product.stock}</p>
+                                        <p>Status: {destination.status ? "✔️" : "❌"}</p>
+                                        <p>Type: {destination.type}</p>
                                     </div>
                                     <button 
                                         className='w-6 h-6 absolute right-0 bottom-0 flex items-center justify-center 
                                         bg-red-600 hover:bg-red-500 text-white rounded-tl group-last:rounded-br'
-                                        onClick={()=>handleDelete(product._id)}
+                                        onClick={()=>handleDelete(destination._id)}
                                     >
                                         x
                                     </button>
@@ -131,4 +145,4 @@ const ProductCreator = () => {
     )
 }
 
-export default ProductCreator;
+export default DestinationCreator;

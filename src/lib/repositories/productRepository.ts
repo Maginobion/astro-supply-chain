@@ -15,3 +15,8 @@ export const createProduct = async (productData: Omit<TProduct, '_id'>): Promise
     const product = await Product.create(productData);
     return product;
 }
+
+export const deleteProduct = async (productId: string): Promise<boolean> => {
+    const product = await Product.deleteOne({ _id: productId });
+    return product.acknowledged;
+}

@@ -36,7 +36,7 @@ const ProductPicker = () => {
     }
 
     return (
-        <div>
+        <div className='border shadow p-4 rounded'>
             <h1 className="mb-2">Send product</h1>
             <form onSubmit={handleSubmit} className="flex flex-col">
                 <p>Choose a product:</p>

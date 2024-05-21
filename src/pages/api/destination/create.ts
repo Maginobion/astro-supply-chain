@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro"
-import { createDestination } from "../lib/repositories/destinationRepository.ts";
+import { createDestination } from "../../../lib/repositories/destinationRepository.ts";
 
 export const POST: APIRoute = async ({ params, request }) => {
     try {

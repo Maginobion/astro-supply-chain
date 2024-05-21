@@ -1,11 +1,6 @@
 import type { APIRoute } from "astro"
-import { getProducts } from "../lib/repositories/productRepository.ts";
-import { getDestinations } from "../lib/repositories/destinationRepository.ts";
-
-export type Destination = {
-    id: string;
-    name: string;
-}
+import { getProducts } from "../../lib/repositories/productRepository.ts";
+import { getDestinations } from "../../lib/repositories/destinationRepository.ts";
 
 export const GET: APIRoute = async ({ params, request }) => {
     try {

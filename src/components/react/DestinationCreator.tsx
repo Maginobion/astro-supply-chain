@@ -12,13 +12,13 @@ const DestinationCreator = () => {
 
     useEffect(() => {
         const abortController = new AbortController();
-        fetch('/getProductsAndDestinations', { signal: abortController.signal })
+        fetch('/api/getProductsAndDestinations', { signal: abortController.signal })
         .then(response => response.json())
         .then(data => {
             setDestinations(data.destinations);
-            setIsLoading(false);
         }).catch(error => {
             console.error('Error:', error);
+        }).finally(()=>{
             setIsLoading(false);
         })
         return () => abortController.abort();
@@ -37,20 +37,21 @@ const DestinationCreator = () => {
             destinationType: data.destinationType
         }
 
-        fetch('/createDestination', { method: "POST", body: JSON.stringify(body)})
+        fetch('/api/destination/create', { method: "POST", body: JSON.stringify(body)})
+        .then(res=>res.json())
         .then((res) => {
             confetti({
                 origin: { y: 1 }
             });
-            res.json().then(res=>
-                setDestinations(prev=>[...prev, {
-                    _id: res._id,
-                    name: res.name,
-                    address: res.address,
-                    status: res.status,
-                    type: res.type
-                }])
-            )
+            
+            setDestinations(prev=>[...prev, {
+                _id: res._id,
+                name: res.name,
+                address: res.address,
+                status: res.status,
+                type: res.type
+            }])
+            
             setIsSubmitting(false);
         }).catch(error => {
             console.error('Error:', error);
@@ -61,14 +62,14 @@ const DestinationCreator = () => {
     const handleDelete = (destinationId: string) => {
         if(isDeleting) return;
         setIsDeleting(true);
-        fetch('/deleteProduct', { method: "DELETE", body: JSON.stringify({ destinationId })})
+        fetch('/api/destination/delete', { method: "DELETE", body: JSON.stringify({ destinationId })})
+        .then(res=>res.json())
         .then((res) => {
             confetti({
                 origin: { y: 1 }
             });
-            res.json().then(res=>
-                setDestinations(prev=>prev.filter(elem=>elem._id !== destinationId))
-            )
+            
+            setDestinations(prev=>prev.filter(elem=>elem._id !== destinationId))
             setIsDeleting(false);
         }).catch(error => {
             console.error('Error:', error);
@@ -131,6 +132,7 @@ const DestinationCreator = () => {
                                     <button 
                                         className='w-6 h-6 absolute right-0 bottom-0 flex items-center justify-center 
                                         bg-red-600 hover:bg-red-500 text-white rounded-tl group-last:rounded-br'
+                                        disabled={isDeleting}
                                         onClick={()=>handleDelete(destination._id)}
                                     >
                                         x

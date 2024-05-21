@@ -1,16 +1,16 @@
 import confetti from 'canvas-confetti';
 import { useEffect, useState, type FormEventHandler } from 'react';
-import type { Destination } from '../../pages/getProductsAndDestinations';
 import type { TProduct } from '../../common/types/product';
+import type { TDestination } from '../../common/types/destination';
 
 const ProductPicker = () => {
 
     const [products, setProducts] = useState<TProduct[]>([]);
-    const [destinations, setDestinations] = useState<Destination[]>([]);
+    const [destinations, setDestinations] = useState<TDestination[]>([]);
 
     useEffect(() => {
         const abortController = new AbortController();
-        fetch('/getProductsAndDestinations', { signal: abortController.signal })
+        fetch('/api/getProductsAndDestinations', { signal: abortController.signal })
         .then(response => response.json())
         .then(data => {
             setProducts(data.products);
@@ -25,7 +25,7 @@ const ProductPicker = () => {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
         const data = Object.fromEntries(formData.entries());
-        fetch('/sendProductToDestination', { method: "POST", body: JSON.stringify(data)})
+        fetch('/api/sendProductToDestination', { method: "POST", body: JSON.stringify(data)})
         .then(() => {
             confetti({
                 origin: { y: 1 }
@@ -51,7 +51,7 @@ const ProductPicker = () => {
                 <select name="destinationId" className="border">
                     {
                         destinations.map((destination) => (
-                            <option key={destination.id} value={destination.id}>{destination.name}</option>
+                            <option key={destination._id} value={destination._id}>{destination.name}</option>
                         ))
                     }
                 </select>

@@ -1,16 +1,16 @@
 import type { APIRoute } from "astro"
-import { createProduct, deleteProduct, getProducts } from "../lib/repositories/productRepository.ts";
+import { deleteDestination } from "../../../lib/repositories/destinationRepository.ts";
 
 export const DELETE: APIRoute = async ({ params, request }) => {
     try {
         const body = await request.json();
-        if(!body.productId) {
+        if(!body.destinationId) {
             return new Response(null, {
                 status: 422,
                 statusText: 'Unprocessable Entity'
             });
         }
-        const result = await deleteProduct(body.productId);
+        const result = await deleteDestination(body.destinationId);
         return new Response(JSON.stringify({ result }), {
             status: 200,
             statusText: 'OK'

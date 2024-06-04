@@ -1,10 +1,10 @@
 import confetti from 'canvas-confetti';
 import { useEffect, useState, type FormEventHandler } from 'react';
-import type { TDestination } from '../../common/types/destination';
+import type { TPackage } from '../../common/types/package';
 
-const DestinationCreator = () => {
+const PackageCreator = () => {
 
-    const [destinations, setDestinations] = useState<TDestination[]>([]);
+    const [packages, setPackages] = useState<TPackage[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false)
@@ -146,4 +146,4 @@ const DestinationCreator = () => {
     )
 }
 
-export default DestinationCreator;
+export default PackageCreator;

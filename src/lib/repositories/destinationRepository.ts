@@ -7,16 +7,16 @@ export const getDestinations = async (): Promise<TDestination[]> => {
 }
 
 export const getDestinationById = async (id: string): Promise<TDestination | null> => {
-    const product = await Destination.findById(id).exec();
-    return product;
+    const destination = await Destination.findById(id).exec();
+    return destination;
 }
 
 export const createDestination = async (destinationData: Omit<TDestination, '_id'>): Promise<TDestination> => {
-    const product = await Destination.create(destinationData);
-    return product;
+    const destination = await Destination.create(destinationData);
+    return destination;
 }
 
 export const deleteDestination = async (productId: string): Promise<boolean> => {
-    const product = await Destination.deleteOne({ _id: productId });
-    return product.acknowledged;
+    const destination = await Destination.deleteOne({ _id: productId });
+    return destination.acknowledged;
 }

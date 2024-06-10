@@ -1,6 +1,6 @@
 ---
 // Component Imports
-import ProductCreator from '../components/react/ProductCreator';
+import PackageCreator from '../components/react/PackageCreator/PackageCreator';
 import DefaultLayout from '../layouts/DefaultLayout.astro';
 
 // Full Astro Component Syntax:
@@ -19,7 +19,7 @@ import DefaultLayout from '../layouts/DefaultLayout.astro';
 	<body>
 		<DefaultLayout>
 			<div class="grid place-items-center content-center">
-				<ProductCreator client:idle/>
+				<PackageCreator client:idle/>
 			</div>
 		</DefaultLayout>
 	</body>

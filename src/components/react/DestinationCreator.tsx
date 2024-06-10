@@ -1,10 +1,11 @@
 import confetti from 'canvas-confetti';
 import { useEffect, useState, type FormEventHandler } from 'react';
-import type { TDestination } from '../../common/types/destination';
+import useDestinationStore from '../../stores/destinationStore';
 
 const DestinationCreator = () => {
 
-    const [destinations, setDestinations] = useState<TDestination[]>([]);
+    const destinations = useDestinationStore(p=>p.destinations)
+    const setDestinations = useDestinationStore(p=>p.setDestinations)
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false)
@@ -43,7 +44,7 @@ const DestinationCreator = () => {
                 origin: { y: 1 }
             });
             
-            setDestinations(prev=>[...prev, {
+            setDestinations([...destinations!, {
                 _id: res._id,
                 name: res.name,
                 address: res.address,
@@ -68,7 +69,7 @@ const DestinationCreator = () => {
                 origin: { y: 1 }
             });
             
-            setDestinations(prev=>prev.filter(elem=>elem._id !== destinationId))
+            setDestinations(destinations!.filter(elem=>elem._id !== destinationId))
             setIsDeleting(false);
         }).catch(error => {
             console.error('Error:', error);
@@ -115,10 +116,10 @@ const DestinationCreator = () => {
                 ) : (
                     <div className='mt-4 flex flex-col border shadow rounded divide-y'>
                         {
-                            destinations.length === 0 ? (
+                            destinations!.length === 0 ? (
                                 <p className='p-4'>No destinations.</p>
                             ) :
-                            destinations.map((destination) => (
+                            destinations!.map((destination) => (
                                 <div className='p-4 flex gap-4 justify-between hover:bg-[#BFB5AF] relative group' key={destination._id}>
                                     <div className='flex-1'>
                                         <h2>{destination.name}</h2>

@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "pnpm dev",
+      "name": "Development server",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "pnpm build",
+      "name": "Build",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
+}

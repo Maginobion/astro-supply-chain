@@ -1,7 +1,27 @@
 import type { TPackage } from "../../../common/types/package";
 import useDestinationStore from "../../../stores/destinationStore";
+import useProductStore from "../../../stores/productStore";
 import AddIcon from "../icons/AddIcon";
 import DeleteIcon from "../icons/DeleteIcon";
+
+type ProductItemProps = {
+  serial: string;
+  productId: string;
+  tag: string;
+};
+
+const ProductItem = ({ serial, productId, tag }: ProductItemProps) => {
+  const products = useProductStore((p) => p.products);
+  const currentItemName = products?.find((p) => p._id === productId)?.name;
+  return (
+    <li key={serial}>
+      <div>Id: {productId}</div>
+      <div>Product name: {currentItemName}</div>
+      <div>Serial: {serial}</div>
+      <div>Tag: {tag ?? "-"}</div>
+    </li>
+  );
+};
 
 type PackageItemProps = {
   pack: TPackage;
@@ -38,11 +58,12 @@ const PackageItem = ({ pack, isSelected, toggleSelect }: PackageItemProps) => {
         <div>Contents ({pack.contents.length}):</div>
         <ul className="flex flex-col gap-2">
           {pack.contents.slice(0, 3).map((p) => (
-            <li key={p.serial}>
-              <div>Id: {p.productId}</div>
-              <div>Serial: {p.serial}</div>
-              <div>Tag: {p.tag ?? "-"}</div>
-            </li>
+            <ProductItem
+              key={p.serial}
+              serial={p.serial}
+              productId={p.productId}
+              tag={p.tag}
+            />
           ))}
         </ul>
       </div>

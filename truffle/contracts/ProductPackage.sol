@@ -11,6 +11,9 @@ contract ProductPackage {
         bytes32 description;
     }
 
+    event ProductCreated(bytes32 indexed productId, bytes32 name, uint256 price, bytes32 description);
+
+
     // Mapping to store products
     mapping(string => TProduct) public products;
 
@@ -26,5 +29,7 @@ contract ProductPackage {
         });
 
         products[productId] = newProduct;
+
+        emit ProductCreated(newProduct.productId, newProduct.name, newProduct.price, newProduct.description);
     }
 }

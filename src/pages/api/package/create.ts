@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { MongooseError } from "mongoose";
+import Web3 from "web3";
 import type {
   LocalProductInstance,
   ProductInstance,
@@ -8,6 +9,7 @@ import {
   createPackage,
   isProductTagUnique,
 } from "../../../lib/repositories/packageRepository.ts";
+import ProductPackageContractEntity from "../../../web3/contracts/ProductPackage.ts";
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
@@ -39,6 +41,20 @@ export const POST: APIRoute = async ({ params, request }) => {
       locationId: body.locationId,
       contents: newProducts,
     });
+    
+    const productRef = newProducts[0]
+
+    const result = await ProductPackageContractEntity.methods
+    .createProduct(
+      productRef.productId, 
+      Web3.utils.asciiToHex("Randomamam").padEnd(66, '0'), 
+      21, 
+      Web3.utils.asciiToHex("Heyyyy this is a descriptioning").padEnd(66, '0')
+    ).send({
+      from: "0xD4779Bf40C2166bec03DA0F863fE4C345A5DeD8D"
+    })
+
+    console.log(result)
     return new Response(JSON.stringify(newPackage), {
       status: 200,
       statusText: "OK",

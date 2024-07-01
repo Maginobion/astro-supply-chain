@@ -4,7 +4,9 @@ import Web3 from "web3";
 import type {
   LocalProductInstance,
   ProductInstance,
+  TPackage,
 } from "../../../common/types/package.ts";
+import ipfsClient from "../../../ipfs/config.ts";
 import {
   createPackage,
   isProductTagUnique,
@@ -41,20 +43,41 @@ export const POST: APIRoute = async ({ params, request }) => {
       locationId: body.locationId,
       contents: newProducts,
     });
-    
-    const productRef = newProducts[0]
+
+    const productRef = newProducts[0];
+    console.log(productRef);
+
+    const actionJson = {
+      type: "create",
+      data: {
+        _id: newPackage._id,
+        contents: newPackage.contents,
+        locationId: newPackage.locationId,
+        lpn: newPackage.lpn,
+      } as TPackage,
+    };
+
+    const jsonString = JSON.stringify(actionJson, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const file = new File([blob], "productData.json", {
+      type: "application/json",
+    });
+    const res = await ipfsClient.uploadFile(file);
+    console.log(res);
 
     const result = await ProductPackageContractEntity.methods
-    .createProduct(
-      productRef.productId, 
-      Web3.utils.asciiToHex("Randomamam").padEnd(66, '0'), 
-      21, 
-      Web3.utils.asciiToHex("Heyyyy this is a descriptioning").padEnd(66, '0')
-    ).send({
-      from: "0xD4779Bf40C2166bec03DA0F863fE4C345A5DeD8D"
-    })
+      .createProduct(
+        productRef.productId,
+        Web3.utils.asciiToHex("Test").padEnd(66, "0"),
+        21,
+        Web3.utils.asciiToHex("Heyyyy this is a descriptioning").padEnd(66, "0")
+      )
+      .send({
+        from: "0xa6ed17A4e355cC369934d2F29B83D51cFd82Cd8e",
+        gas: "5000000",
+      });
 
-    console.log(result)
+    console.log(result.effectiveGasPrice);
     return new Response(JSON.stringify(newPackage), {
       status: 200,
       statusText: "OK",

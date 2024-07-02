@@ -6,3 +6,7 @@ export const sendPackagesToDestination = (body: SendPackageDTO) => {
     body: JSON.stringify(body),
   });
 };
+
+export const getPackageHistory = (packageId: string) => {
+  return fetch("/api/package/" + packageId);
+};

@@ -100,7 +100,7 @@ const PackageCreator = () => {
     <div>
       {isLoading && <p>Loading...</p>}
       <div className="p-4 border shadow rounded min-w-[40rem]">
-        <h1 className="mb-2">Create destination</h1>
+        <h1 className="mb-2">Create package</h1>
         <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex gap-4">
             <div className="flex-1">

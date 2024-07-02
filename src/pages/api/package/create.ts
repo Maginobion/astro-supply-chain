@@ -1,13 +1,17 @@
 import type { APIRoute } from "astro";
 import { MongooseError } from "mongoose";
+import Web3 from "web3";
 import type {
   LocalProductInstance,
   ProductInstance,
+  TPackage,
 } from "../../../common/types/package.ts";
+import ipfsClient from "../../../ipfs/config.ts";
 import {
   createPackage,
   isProductTagUnique,
 } from "../../../lib/repositories/packageRepository.ts";
+import ProductPackageContractEntity from "../../../web3/contracts/ProductPackage.ts";
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
@@ -39,6 +43,37 @@ export const POST: APIRoute = async ({ params, request }) => {
       locationId: body.locationId,
       contents: newProducts,
     });
+
+    const productRef = newProducts[0];
+    console.log(productRef);
+
+    const actionJson = {
+      type: "create",
+      data: {
+        _id: newPackage._id,
+        contents: newPackage.contents,
+        locationId: newPackage.locationId,
+        lpn: newPackage.lpn,
+      } as TPackage,
+    };
+
+    const jsonString = JSON.stringify(actionJson, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const file = new File([blob], "productData.json", {
+      type: "application/json",
+    });
+    const res = await ipfsClient.uploadFile(file);
+
+    await ProductPackageContractEntity.methods
+      .addPackageData(
+        String(res),
+        Web3.utils.asciiToHex(String(newPackage._id)).padEnd(66, "0")
+      )
+      .send({
+        from: "0x852262E3ec072f4a91EE8EDBB09532971b3F64cA",
+        gas: "5000000",
+      });
+
     return new Response(JSON.stringify(newPackage), {
       status: 200,
       statusText: "OK",

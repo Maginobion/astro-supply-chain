@@ -63,21 +63,17 @@ export const POST: APIRoute = async ({ params, request }) => {
       type: "application/json",
     });
     const res = await ipfsClient.uploadFile(file);
-    console.log(res);
 
-    const result = await ProductPackageContractEntity.methods
-      .createProduct(
-        productRef.productId,
-        Web3.utils.asciiToHex("Test").padEnd(66, "0"),
-        21,
-        Web3.utils.asciiToHex("Heyyyy this is a descriptioning").padEnd(66, "0")
+    await ProductPackageContractEntity.methods
+      .addPackageData(
+        String(res),
+        Web3.utils.asciiToHex(String(newPackage._id)).padEnd(66, "0")
       )
       .send({
-        from: "0xa6ed17A4e355cC369934d2F29B83D51cFd82Cd8e",
+        from: "0x852262E3ec072f4a91EE8EDBB09532971b3F64cA",
         gas: "5000000",
       });
 
-    console.log(result.effectiveGasPrice);
     return new Response(JSON.stringify(newPackage), {
       status: 200,
       statusText: "OK",

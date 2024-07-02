@@ -1,10 +1,12 @@
 import type { APIRoute } from "astro";
+import Web3 from "web3";
 import type { SendPackageDTO } from "../../common/endpoints/sendPackageToDestination";
 import ipfsClient from "../../ipfs/config";
 import {
   getPackagesById,
   updatePackagesLocation,
 } from "../../lib/repositories/packageRepository";
+import ProductPackageContractEntity from "../../web3/contracts/ProductPackage";
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
@@ -69,8 +71,8 @@ export const POST: APIRoute = async ({ params, request }) => {
         const res = await ipfsClient.uploadFile(file);
         console.log(res);
         return {
-          packageId: currPackage._id,
-          cid: res.link(),
+          packageId: String(currPackage._id),
+          cid: String(res),
         };
       })
     );
@@ -81,6 +83,22 @@ export const POST: APIRoute = async ({ params, request }) => {
         statusText: "There was an error saving the changes.",
       });
     }
+
+    await Promise.all(
+      submittedPackages.map(async (submittedData) => {
+        const result = await ProductPackageContractEntity.methods
+          .addPackageData(
+            submittedData.cid,
+            Web3.utils.asciiToHex(submittedData.packageId).padEnd(66, "0")
+          )
+          .send({
+            from: "0x852262E3ec072f4a91EE8EDBB09532971b3F64cA",
+            gas: "5000000",
+          });
+
+        console.log(result.effectiveGasPrice);
+      })
+    )
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

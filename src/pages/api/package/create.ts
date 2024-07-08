@@ -6,7 +6,8 @@ import type {
   ProductInstance,
   TPackage,
 } from "../../../common/types/package.ts";
-import ipfsClient from "../../../ipfs/config.ts";
+import envConfig from "../../../config/env/env.ts";
+import ipfsClient from "../../../config/ipfs/config.ts";
 import {
   createPackage,
   isProductTagUnique,
@@ -70,7 +71,7 @@ export const POST: APIRoute = async ({ params, request }) => {
         Web3.utils.asciiToHex(String(newPackage._id)).padEnd(66, "0")
       )
       .send({
-        from: "0x852262E3ec072f4a91EE8EDBB09532971b3F64cA",
+        from: envConfig.testAddress,
         gas: "5000000",
       });
 

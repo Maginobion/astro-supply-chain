@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
 import Web3 from "web3";
 import type { SendPackageDTO } from "../../common/endpoints/sendPackageToDestination";
-import ipfsClient from "../../ipfs/config";
+import envConfig from "../../config/env/env";
+import ipfsClient from "../../config/ipfs/config";
 import {
   getPackagesById,
   updatePackagesLocation,
@@ -86,19 +87,17 @@ export const POST: APIRoute = async ({ params, request }) => {
 
     await Promise.all(
       submittedPackages.map(async (submittedData) => {
-        const result = await ProductPackageContractEntity.methods
+        await ProductPackageContractEntity.methods
           .addPackageData(
             submittedData.cid,
             Web3.utils.asciiToHex(submittedData.packageId).padEnd(66, "0")
           )
           .send({
-            from: "0x852262E3ec072f4a91EE8EDBB09532971b3F64cA",
+            from: envConfig.testAddress,
             gas: "5000000",
           });
-
-        console.log(result.effectiveGasPrice);
       })
-    )
+    );
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

@@ -42,7 +42,7 @@
  */
 
 require("dotenv").config();
-const { MNEMONIC, PROJECT_ID } = process.env;
+const { MNEMONIC, INFURA_API_KEY } = process.env;
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const web3 = require("web3");
@@ -92,8 +92,14 @@ module.exports = {
     //   gasPrice: web3.utils.toWei('10', 'gwei')
     // },
     sepolia: {
-      provider: () => new HDWalletProvider(MNEMONIC, INFURA_API_KEY),
+      provider: () =>
+        new HDWalletProvider(
+          MNEMONIC,
+          `https://sepolia.infura.io/v3/${INFURA_API_KEY}`
+        ),
       network_id: "11155111",
+      confirmations: 2,
+      timeoutBlocks: 200,
       gasPrice: web3.utils.toWei("10", "gwei"),
     },
     //

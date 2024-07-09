@@ -36,8 +36,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_cid\",\"type\":\"string\"},{\"internalType\":\"bytes32\",\"name\":\"_packageId\",\"type\":\"bytes32\"}],\"name\":\"addPackageData\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_packageId\",\"type\":\"bytes32\"}],\"name\":\"getCIDsByPackageId\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/ProductPackage.sol\":\"ProductPackage\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/ProductPackage.sol\":{\"keccak256\":\"0xf336072b2978fd2010efa10916fed8abbdd24200b3ca1a570bc317444b0698e6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fc6c3d2e2dde57bbdfc00b0584f2235699e19e7ac2bc9a45b6a589140496a3de\",\"dweb:/ipfs/QmbPsQHHcTASC9LoUtDVxxCKLPBzD7rR54u8GVx7kne81a\"]}},\"version\":1}",
@@ -4436,8 +4435,7 @@
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-07-08T07:29:23.819Z",
-  "networkType": "ethereum",
+  "updatedAt": "2024-07-09T04:40:32.966Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

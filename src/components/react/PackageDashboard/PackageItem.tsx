@@ -3,6 +3,7 @@ import useDestinationStore from "../../../stores/destinationStore";
 import useProductStore from "../../../stores/productStore";
 import AddIcon from "../icons/AddIcon";
 import DeleteIcon from "../icons/DeleteIcon";
+import InfoIcon from "../icons/InfoIcon";
 
 type ProductItemProps = {
   serial: string;
@@ -41,18 +42,29 @@ const PackageItem = ({ pack, isSelected, toggleSelect }: PackageItemProps) => {
           <b>LPN: {pack.lpn}</b>
           <span>Location: {currentLocation}</span>
         </div>
-        <button
-          type="button"
-          className={
-            "flex gap-4 p-2 rounded " +
-            (isSelected
-              ? "bg-red-500 hover:bg-red-600"
-              : "bg-green-500 hover:bg-green-600")
-          }
-          onClick={toggleSelect}
-        >
-          {isSelected ? <DeleteIcon /> : <AddIcon />}
-        </button>
+        <div className="flex gap-2">
+          <a href={"/" + String(pack._id)}>
+            <button
+              type="button"
+              className={"flex p-2 rounded bg-blue-400 hover:bg-blue-600"}
+              onClick={toggleSelect}
+            >
+              <InfoIcon />
+            </button>
+          </a>
+          <button
+            type="button"
+            className={
+              "flex p-2 rounded " +
+              (isSelected
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-green-500 hover:bg-green-600")
+            }
+            onClick={toggleSelect}
+          >
+            {isSelected ? <DeleteIcon /> : <AddIcon />}
+          </button>
+        </div>
       </header>
       <div>
         <div>Contents ({pack.contents.length}):</div>

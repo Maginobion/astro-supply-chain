@@ -1,6 +1,11 @@
 ---
 
+import PackageDetails from '../components/react/PackageDetails';
 import DefaultLayout from '../layouts/DefaultLayout.astro';
+
+const { id } = Astro.params;
+
+if(!id) Astro.redirect("/")
 
 ---
 
@@ -10,14 +15,13 @@ import DefaultLayout from '../layouts/DefaultLayout.astro';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Settings</title>
+		<title>Package details</title>
 	</head>
 
 	<body>
 		<DefaultLayout>
-			<div class="flex gap-4 items-center justify-center">
-				<div>Activate blockchain mode:</div>
-                <input type="checkbox" />
+			<div class="grid place-items-center content-center">
+				<PackageDetails client:idle packageId={id!}/>
 			</div>
 		</DefaultLayout>
 	</body>

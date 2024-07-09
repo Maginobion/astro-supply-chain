@@ -1,5 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
-import { HardhatUserConfig, vars } from "hardhat/config";
+import { type HardhatUserConfig, vars } from "hardhat/config";
 
 const INFURA_API_KEY = vars.get("INFURA_API_KEY");
 const SEPOLIA_PRIVATE_KEY = vars.get("SEPOLIA_PRIVATE_KEY");
